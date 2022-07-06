@@ -1,0 +1,29 @@
+canvas {
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin:auto;
+    overflow: hidden;
+}
+
+#button-container {
+  position: relative;
+  z-index: 10;
+}
+
+.button {
+  background-color: rgba(0, 0, 0, 0.7);  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 25px;
+  font-weight: bold;
+  font-family: OCR A Std, monospace;
+}
