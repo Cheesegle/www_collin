@@ -31,5 +31,3 @@ placemarkAttributes.labelAttributes.color = WorldWind.Color.RED;
 placemarkAttributes.labelAttributes.offset = new WorldWind.Offset(
     WorldWind.OFFSET_FRACTION, 0.5,
     WorldWind.OFFSET_FRACTION, 1.0);
-ddd
-
