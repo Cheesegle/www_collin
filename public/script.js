@@ -39,14 +39,15 @@ class Placemark {
 
     this.placemark = new WorldWind.Placemark(position, false, placemarkAttributes);
 
-    //highlight attributes
-    let highlightAttributes = new WorldWind.PlacemarkAttributes(placemarkAttributes);
-    this.placemark.highlightAttributes = highlightAttributes;
-
     //image offset
     placemarkAttributes.imageOffset = new WorldWind.Offset(
       WorldWind.OFFSET_FRACTION, offsetX,
       WorldWind.OFFSET_FRACTION, 0.0);
+
+    //highlight attributes
+    let highlightAttributes = new WorldWind.PlacemarkAttributes(placemarkAttributes);
+    this.placemark.highlightAttributes = highlightAttributes;
+    highlightAttributes.imageScale = 1.2;
 
     //label color
     placemarkAttributes.labelAttributes.color = WorldWind.Color[color];
@@ -64,6 +65,7 @@ class Placemark {
       "Lat " + this.placemark.position.latitude.toPrecision(4).toString() + "\n" +
       "Lon " + this.placemark.position.longitude.toPrecision(5).toString();
     this.placemark.alwaysOnTop = true;
+    this.placemark.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
 
     //placemark modal user property
     if (modal) {
@@ -126,8 +128,8 @@ let closeModal = function() {
   }
   //timeout to make modalOpen false after click events trigger
   setTimeout(() => {
-     modalOpen = false;
-   });
+    modalOpen = false;
+  });
 };
 
 for (let i = 0; i < closeElements.length; i++) {
