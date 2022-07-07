@@ -65,7 +65,7 @@ class Placemark {
       "Lon " + this.placemark.position.longitude.toPrecision(5).toString();
     this.placemark.alwaysOnTop = true;
 
-    //placemark modal
+    //placemark modal user property
     if (modal) {
       this.placemark.userProperties.clickModal = modal;
     }
@@ -90,21 +90,26 @@ placemarks.push(new Placemark(36.091919, -115.294617, 100, "YELLOW", "Las Vegas 
 
 placemarks.push(new Placemark(41.452040, -74.438760, 100, "GREEN", "Northern Academy", "images/plain-red.png", 0.3, "NORTHERN"));
 
+//is modal open
+let modalOpen = false;
+
 //on placemark click open modal
-window.addEventListener('click', e => {
+window.addEventListener('click', event => {
   //get mouse x and y
-  var x = e.clientX,
-    y = e.clientY;
+  var x = event.clientX,
+    y = event.clientY;
 
   //get highlighted placemarks
   var placeList = wwd.pick(wwd.canvasCoordinates(x, y));
 
-  //if placemarks exist loop through them and find ones with clickModal user property
-  if (placeList.objects.length > 0) {
+  //find placemarks with clickModal user property
+  //also make sure to not repoen modal if modal is already open
+  if (placeList.objects.length > 0 && modalOpen === false) {
     for (var i = 0; i < placeList.objects.length; i++) {
-      if (placeList.objects[i].userObject && placeList.objects[i].userObject.userProperties && placeList.objects[i].userObject.userProperties.clickModal) {
+      if (placeList.objects[i]?.userObject?.userProperties?.clickModal) {
+        modalOpen = true;
+        //make modal visible
         let clickModal = placeList.objects[i].userObject.userProperties.clickModal;
-        // alert(clickModal);
         document.getElementById(clickModal).style.display = 'block';
       }
     }
@@ -119,9 +124,15 @@ let closeModal = function() {
   for (let i = 0; i < modalElements.length; i++) {
     modalElements[i].style.display = 'none';
   }
-
+  //timeout to make modalOpen false after click events trigger
+  setTimeout(() => {
+     modalOpen = false;
+   });
 };
 
+for (let i = 0; i < closeElements.length; i++) {
+  closeElements[i].addEventListener('click', closeModal, false);
+}
 for (let i = 0; i < closeElements.length; i++) {
   closeElements[i].addEventListener('click', closeModal, false);
 }
