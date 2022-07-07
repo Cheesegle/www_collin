@@ -7,7 +7,11 @@ app.use(express.static('public'))
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/public/index.html'))
-})
+});
+
+app.get('/level_1_2', (req, res) => {
+    res.sendFile(path.join(__dirname, '/public/level_1_2/index.html'))
+});
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`)
