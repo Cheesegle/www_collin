@@ -3,6 +3,8 @@ let canvas = document.getElementById('canvasOne');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+5555
+
 //new WorldWind instance on canvasOne
 let wwd = new WorldWind.WorldWindow("canvasOne");
 
