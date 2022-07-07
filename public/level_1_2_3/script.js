@@ -31,7 +31,7 @@ var highlightController = new WorldWind.HighlightController(wwd);
 
 //placemark class
 class Placemark {
-    constructor(lon, lat, z, color, placemarkLabel, imageSource, offsetX, modal) {
+    constructor(lon, lat, z, color, placemarkLabel, imageSource, offsetX, clickModal, moveModal) {
         let placemarkAttributes = new WorldWind.PlacemarkAttributes(null);
 
         //placemark position
@@ -68,8 +68,11 @@ class Placemark {
         this.placemark.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
 
         //placemark modal user property
-        if (modal) {
-            this.placemark.userProperties.clickModal = modal;
+        if (clickModal) {
+            this.placemark.userProperties.clickModal = clickModal;
+        }
+        if(moveModal){
+            this.placemark.userProperties.moveModal = moveModal;
         }
         placemarkLayer.addRenderable(this.placemark);
     }
@@ -87,17 +90,15 @@ class Placemark {
 //placemarks array
 let placemarks = [];
 
-
 //add placemarks
 placemarks.push(new Placemark(36.091919, -115.294617, 100, "YELLOW", "Las Vegas Home", "images/clickbait.png", 1, "LASVEGAS"));
 
-placemarks.push(new Placemark(41.452040, -74.438760, 100, "GREEN", "Northern Academy", "images/plain-red.png", 0.3, "NORTHERN"));
+placemarks.push(new Placemark(41.452040, -74.438760, 100, "GREEN", "Northern Academy", "images/plain-red.png", 0.3,false ,"NORTHERN"));
 
 //is modal open?
 let modalOpen = false;
 
-//on placemark click open modal
-window.addEventListener('click', event => {
+function checkModal(event, click) {
     //get mouse x and y
     var x = event.clientX,
         y = event.clientY;
@@ -109,15 +110,29 @@ window.addEventListener('click', event => {
     //also make sure to not repoen modal if modal is already open
     if (placeList.objects.length > 0 && modalOpen === false) {
         for (var i = 0; i < placeList.objects.length; i++) {
-            if (placeList.objects[i]?.userObject?.userProperties?.clickModal) {
+            //only open click modal if clicked
+            if (placeList.objects[i]?.userObject?.userProperties?.clickModal && click === true) {
                 modalOpen = true;
                 //make modal visible
-                let clickModal = placeList.objects[i].userObject.userProperties.clickModal;
-                document.getElementById(clickModal).style.display = 'block';
+                document.getElementById(placeList.objects[i].userObject.userProperties.clickModal).style.display = 'block';
+            }
+            if (placeList.objects[i]?.userObject?.userProperties?.moveModal) {
+                modalOpen = true;
+                //make modal visible
+                document.getElementById(placeList.objects[i].userObject.userProperties.moveModal).style.display = 'block';
             }
         }
     }
-})
+}
+
+//on placemark click open modal
+window.addEventListener('click', event => {
+    checkModal(event, true);
+});
+
+window.addEventListener('mousemove', event => {
+    checkModal(event, false);
+});
 
 //modal close
 let closeElements = document.getElementsByClassName('close');
@@ -146,6 +161,7 @@ function placemarkToggle() {
     // placemarks.forEach(placemark => {
     //   placemark.toggle();
     // })
+
     //placemarks toggle
     if (placemarkLayer.enabled) {
         placemarkLayer.enabled = false;
