@@ -90,7 +90,7 @@ placemarks.push(new Placemark(36.091919, -115.294617, 100, "YELLOW", "Las Vegas 
 
 placemarks.push(new Placemark(41.452040, -74.438760, 100, "GREEN", "Northern Academy", "images/plain-red.png", 0.3, "NORTHERN"));
 
-//is modal open
+//is modal open?
 let modalOpen = false;
 
 //on placemark click open modal
